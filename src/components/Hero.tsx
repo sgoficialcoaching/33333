@@ -4,7 +4,7 @@ import { Play, Pause, Volume2, VolumeX, Instagram, Twitter, Youtube } from 'luci
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = React.useState(true);
-  const [isMuted, setIsMuted] = React.useState(true);
+  const [isMuted, setIsMuted] = React.useState(false);
   const [showControls, setShowControls] = React.useState(false);
 
   const togglePlay = () => {
@@ -50,7 +50,7 @@ const Hero = () => {
               <video
                 ref={videoRef}
                 autoPlay
-                muted
+                muted={false}
                 loop
                 playsInline
                 preload="metadata"
