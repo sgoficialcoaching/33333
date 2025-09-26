@@ -1,7 +1,31 @@
 import React, { useEffect, useRef } from 'react';
-import { Play, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Instagram, Twitter, Youtube } from 'lucide-react';
 
 const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(true);
+  const [isMuted, setIsMuted] = React.useState(true);
+  const [showControls, setShowControls] = React.useState(false);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -17,32 +41,64 @@ const Hero = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto pt-32">
           {/* Main Video Box */}
-          <div className="relative bg-gradient-to-br from-gray-900/50 to-black/50 p-4 rounded-3xl border border-white/20 hover:border-white/40 transition-all duration-700 backdrop-blur-xl group mb-12">
+          <div 
+            className="relative bg-gradient-to-br from-gray-900/50 to-black/50 p-4 rounded-3xl border border-white/20 hover:border-white/40 transition-all duration-700 backdrop-blur-xl group mb-12"
+            onMouseEnter={() => setShowControls(true)}
+            onMouseLeave={() => setShowControls(false)}
+          >
             <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl">
               <video
+                ref={videoRef}
                 autoPlay
                 muted
                 loop
                 playsInline
                 preload="metadata"
-                className="w-full h-full object-cover cursor-pointer"
-                onClick={(e) => {
-                  const video = e.target as HTMLVideoElement;
-                  if (video.paused) {
-                    video.play();
-                  } else {
-                    video.pause();
-                  }
-                }}
+                className="w-full h-full object-cover"
               >
                 <source src="https://sergiconstance-9fn0dyoiqm.live-website.com/wp-content/uploads/2025/09/0924.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
               </video>
               
-              {/* Video Controls Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="bg-black/50 backdrop-blur-sm rounded-full p-4 transform scale-75 hover:scale-100 transition-transform duration-300">
-                  <Play className="w-8 h-8 text-white" />
+              {/* Enhanced Video Controls Overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
+                {/* Center Play/Pause Button */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <button
+                    onClick={togglePlay}
+                    className="bg-black/70 backdrop-blur-sm rounded-full p-6 transform hover:scale-110 transition-all duration-300 hover:bg-black/80"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-8 h-8 text-white" />
+                    ) : (
+                      <Play className="w-8 h-8 text-white ml-1" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Bottom Controls */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={toggleMute}
+                      className="bg-black/70 backdrop-blur-sm rounded-full p-3 hover:bg-black/80 transition-all duration-300 hover:scale-110"
+                    >
+                      {isMuted ? (
+                        <VolumeX className="w-5 h-5 text-white" />
+                      ) : (
+                        <Volume2 className="w-5 h-5 text-white" />
+                      )}
+                    </button>
+                    <span className="text-white text-sm font-medium bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                      {isMuted ? 'Click para activar sonido' : 'Sonido activado'}
+                    </span>
+                  </div>
+                  
+                  <div className="bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <span className="text-white text-xs font-medium">
+                      {isPlaying ? 'Reproduciendo' : 'Pausado'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
