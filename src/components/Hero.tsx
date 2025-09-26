@@ -4,7 +4,7 @@ import { Play, Pause, Volume2, VolumeX, Instagram, Twitter, Youtube } from 'luci
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = React.useState(true);
-  const [isMuted, setIsMuted] = React.useState(false);
+  const [isMuted, setIsMuted] = React.useState(true);
   const [showControls, setShowControls] = React.useState(false);
 
   const togglePlay = () => {
@@ -50,7 +50,7 @@ const Hero = () => {
               <video
                 ref={videoRef}
                 autoPlay
-                muted={false}
+                muted={true}
                 loop
                 playsInline
                 preload="metadata"
@@ -90,7 +90,7 @@ const Hero = () => {
                       )}
                     </button>
                     <span className="text-white text-sm font-medium bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
-                      {isMuted ? 'Click para activar sonido' : 'Sonido activado'}
+                      {isMuted ? 'Click para activar sonido' : 'Click para silenciar'}
                     </span>
                   </div>
                   
