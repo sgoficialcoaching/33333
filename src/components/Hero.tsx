@@ -21,15 +21,30 @@ const Hero = () => {
             <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl">
               <video
                 autoPlay
+                muted
                 loop
                 playsInline
-                controls
                 preload="metadata"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-pointer"
+                onClick={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  if (video.paused) {
+                    video.play();
+                  } else {
+                    video.pause();
+                  }
+                }}
               >
                 <source src="https://sergiconstance-9fn0dyoiqm.live-website.com/wp-content/uploads/2025/09/0924.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
               </video>
+              
+              {/* Video Controls Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="bg-black/50 backdrop-blur-sm rounded-full p-4 transform scale-75 hover:scale-100 transition-transform duration-300">
+                  <Play className="w-8 h-8 text-white" />
+                </div>
+              </div>
             </div>
           </div>
 
